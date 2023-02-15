@@ -1,0 +1,36 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Login {
+  accessToken: String
+  accessTokenInfo: TokenInfo
+  refreshToken: String
+  refreshTokenInfo: TokenInfo
+  user: User!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  login(data: LoginInput!): Login!
+}
+
+type Query {
+  user(email: String!): User!
+}
+
+type TokenInfo {
+  exp: String!
+  id: String!
+}
+
+type User {
+  email: String!
+  firstname: String!
+  id: String!
+  lastname: String!
+}
