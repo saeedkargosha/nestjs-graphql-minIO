@@ -20,7 +20,7 @@ type Mutation {
 }
 
 type Query {
-  user(email: String!): User!
+  user: User!
 }
 
 type TokenInfo {
