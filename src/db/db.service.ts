@@ -9,7 +9,7 @@ export class DBService {
       email: 'saeedkargosha@gmail.com',
       firstname: 'Saeed',
       lastname: 'Kargosha',
-      password: '1234567890',
+      password: '$2b$10$eZoYnd/rYOm9uK/JH6zvcOpOtuYmQvucQkNsBpNE5XfJZL9qkFDJW',
     },
   ];
 
