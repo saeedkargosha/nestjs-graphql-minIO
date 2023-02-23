@@ -14,6 +14,9 @@ export class User {
   @Field()
   lastname: string;
 
+  @Field()
+  avatar: string;
+
   @HideField()
   password: string;
 }

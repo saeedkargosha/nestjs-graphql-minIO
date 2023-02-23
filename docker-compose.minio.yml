@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  minio:
+    container_name: ${MINIO_CONTAINER_NAME}
+    image: minio/minio
+    ports:
+      - '127.0.0.1:${MINIO_PORT}:9000'
+      - '127.0.0.1:${MINIO_DASHBOARD_PORT}:9001'
+    volumes:
+      - minio-data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    command: server /data --console-address ":9001"
+  minio-client:
+    image: minio/mc
+    entrypoint: ['/bin/sh', '-c']
+    depends_on:
+      - minio
+    command:
+      - mc alias set local http://${MINIO_CONTAINER_NAME}:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD}
+      - mc mb --ignore-existing local/${MINIO_BUCKET}
+      - mc policy set download local/${MINIO_BUCKET}
+
+volumes:
+  minio-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${MINIO_PERSIST_PATH}
+      o: bind

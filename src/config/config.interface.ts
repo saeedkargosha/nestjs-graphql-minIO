@@ -13,7 +13,17 @@ export interface SecurityConfig {
   bcryptSaltOrRound: string | number;
 }
 
+export interface MinioConfig {
+  endpoint: string;
+  port: number;
+  rootUser: string;
+  rootPassword: string;
+  bucket: string;
+  region: string;
+}
+
 export interface Config {
   graphql: GraphqlConfig;
   security: SecurityConfig;
+  minio: MinioConfig;
 }

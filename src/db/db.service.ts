@@ -10,6 +10,7 @@ export class DBService {
       firstname: 'Saeed',
       lastname: 'Kargosha',
       password: '$2b$10$eZoYnd/rYOm9uK/JH6zvcOpOtuYmQvucQkNsBpNE5XfJZL9qkFDJW',
+      avatar: '',
     },
   ];
 

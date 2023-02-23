@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { DBModule } from './db/db.module';
 import { UserModule } from './user/user.module';
@@ -9,6 +9,8 @@ import { configFactory } from './config';
 import { GraphQLModule, NumberScalarMode } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphqlConfig } from './config/config.interface';
+import { MinioClientModule } from './minio/minio.module';
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { GraphqlConfig } from './config/config.interface';
       },
       inject: [ConfigService],
     }),
+    MinioClientModule,
     DBModule,
     AuthModule,
     UserModule,
@@ -41,4 +44,8 @@ import { GraphqlConfig } from './config/config.interface';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(graphqlUploadExpress()).forRoutes('graphql');
+  }
+}

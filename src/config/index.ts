@@ -17,5 +17,13 @@ export const configFactory = (): Config => {
       refreshIn: '7d',
       bcryptSaltOrRound: 10,
     },
+    minio: {
+      endpoint: process.env.MINIO_ENDPOINT,
+      port: Number.parseInt(process.env?.MINIO_PORT || '9000', 10),
+      rootUser: process.env.MINIO_ROOT_USER,
+      rootPassword: process.env.MINIO_ROOT_PASSWORD,
+      region: process.env.MINIO_REGION_NAME,
+      bucket: process.env.MINIO_BUCKET,
+    },
   };
 };

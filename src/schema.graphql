@@ -17,6 +17,7 @@ input LoginInput {
 
 type Mutation {
   login(data: LoginInput!): Login!
+  uploadAvatar(file: Upload!): User!
 }
 
 type Query {
@@ -28,7 +29,11 @@ type TokenInfo {
   id: String!
 }
 
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
 type User {
+  avatar: String!
   email: String!
   firstname: String!
   id: String!
