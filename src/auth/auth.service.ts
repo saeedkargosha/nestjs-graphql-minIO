@@ -1,5 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { DBService } from 'src/db/db.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { PasswordService } from './password.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -9,12 +9,12 @@ import { Login } from './models/auth.model';
 import { Token, TokenInfo } from './models/token.model';
 import { SecurityConfig } from 'src/config/config.interface';
 import { User } from 'src/user/models/user.model';
+import { SignupInput } from './dto/signup.input';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject(forwardRef(() => DBService))
-    private readonly db: DBService,
+    private prisma: PrismaService,
     @Inject(forwardRef(() => PasswordService))
     private readonly passwordService: PasswordService,
     @Inject(forwardRef(() => JwtService))
@@ -24,7 +24,7 @@ export class AuthService {
   ) {}
 
   async login(payload: LoginInput): Promise<Login> {
-    const user = this.db.findWithEmail(payload.email);
+    const user = await this.prisma.user.findUnique({ where: { email: payload.email } });
 
     if (!user) {
       throw new BadRequestException();
@@ -42,6 +42,23 @@ export class AuthService {
       }),
       user,
     };
+  }
+
+  async createUser(payload: SignupInput): Promise<Token> {
+    const hashedPassword = await this.passwordService.hashPassword(payload.password);
+
+    const user = await this.prisma.user.create({
+      data: {
+        email: payload?.email,
+        firstname: payload?.firstname,
+        lastname: payload?.lastname,
+        password: hashedPassword,
+      },
+    });
+
+    return this.generateToken({
+      id: user.id,
+    });
   }
 
   generateToken(payload: JwtInput): Token {
@@ -62,7 +79,7 @@ export class AuthService {
   }
 
   async validateUser(payload: JwtDto): Promise<User> {
-    const user = this.db.findWithId(payload.id);
+    const user = await this.prisma.user.findUnique({ where: { id: payload.id } });
     if (!user) {
       throw new NotFoundException();
     }

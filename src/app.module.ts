@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { DBModule } from './db/db.module';
+import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app/app.controller';
@@ -37,7 +37,7 @@ import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
       inject: [ConfigService],
     }),
     MinioClientModule,
-    DBModule,
+    PrismaModule,
     AuthModule,
     UserModule,
   ],

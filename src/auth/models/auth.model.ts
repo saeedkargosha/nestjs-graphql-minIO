@@ -7,3 +7,8 @@ export class Login extends PartialType(Token) {
   @Field(() => User)
   user: User;
 }
+
+@ObjectType()
+export class Auth extends Token {
+  user: User;
+}

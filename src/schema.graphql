@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Auth {
+  accessToken: String!
+  accessTokenInfo: TokenInfo!
+  refreshToken: String!
+  refreshTokenInfo: TokenInfo!
+  user: User!
+}
+
 type Login {
   accessToken: String
   accessTokenInfo: TokenInfo
@@ -17,11 +25,19 @@ input LoginInput {
 
 type Mutation {
   login(data: LoginInput!): Login!
+  signup(data: SignupInput!): Auth!
   uploadAvatar(file: Upload!): User!
 }
 
 type Query {
   user: User!
+}
+
+input SignupInput {
+  email: String!
+  firstname: String!
+  lastname: String!
+  password: String!
 }
 
 type TokenInfo {
